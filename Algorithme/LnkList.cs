@@ -33,6 +33,36 @@ public class LnkList
         current.Next = new LnkListNode(value);
     }
 
+    public void Insert(int index, int value)
+    {
+        if (_head == null)
+        {
+            _head = new LnkListNode(value);
+            return;
+        }
+
+        if (index == 0)
+        {
+            Prepend(value);
+            return;
+        }
+
+        var i = 0;
+        var current = _head;
+
+        while (current.Next != null)
+        {
+            if (i == index - 1)
+            {
+                current.Next = new LnkListNode(value, current.Next);
+                return;
+            }
+
+            i++;
+            current = current.Next;
+        }
+    }
+
     public IEnumerable<int> ToArray()
     {
         if (_head == null)

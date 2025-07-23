@@ -63,4 +63,49 @@ public class LnkListTests
         
         Assert.Equal(new[] { 10, 15, 20 }, l.ToArray());
     }
+    
+    [Fact]
+    public void Insert_Empty()
+    {
+        var l = new LnkList();
+        l.Insert(0, 100);
+        
+        Assert.Equal(new[] { 100 }, l.ToArray());
+    }
+    
+    [Fact]
+    public void Insert_OneElement()
+    {
+        var l = new LnkList();
+        l.Add(20);
+        
+        l.Insert(0, 100);
+        
+        Assert.Equal(new[] { 100, 20 }, l.ToArray());
+    }
+    
+    [Fact]
+    public void Insert_TwoElement()
+    {
+        var l = new LnkList();
+        l.Add(20);
+        l.Add(40);
+        
+        l.Insert(1, 30);
+        
+        Assert.Equal(new[] { 20, 30, 40 }, l.ToArray());
+    }
+    
+    [Fact]
+    public void Insert_ThreeElement()
+    {
+        var l = new LnkList();
+        l.Add(20);
+        l.Add(30);
+        l.Add(50);
+        
+        l.Insert(2, 40);
+        
+        Assert.Equal(new[] { 20, 30, 40, 50 }, l.ToArray());
+    }
 }
