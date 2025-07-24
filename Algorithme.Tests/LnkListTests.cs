@@ -7,7 +7,7 @@ public class LnkListTests
     {
         var l = new LnkList<int>();
 
-        Assert.Equal(Array.Empty<int>(), l.ToArray());
+        Assert.Equal(Array.Empty<int>(), l.ToEnumerable());
     }
     
     [Fact]
@@ -17,7 +17,7 @@ public class LnkListTests
         
         l.Prepend(5);
         
-        Assert.Equal(new[] { 5 }, l.ToArray());
+        Assert.Equal(new[] { 5 }, l.ToEnumerable());
     }
     
     [Fact]
@@ -28,7 +28,7 @@ public class LnkListTests
         l.Prepend("B");
         l.Prepend("A");
         
-        Assert.Equal(new[] { "A", "B" }, l.ToArray());
+        Assert.Equal(new[] { "A", "B" }, l.ToEnumerable());
     }
     
     [Fact]
@@ -38,7 +38,7 @@ public class LnkListTests
 
         l.Add(15.8f);
         
-        Assert.Equal(new[] { 15.8f }, l.ToArray());
+        Assert.Equal(new[] { 15.8f }, l.ToEnumerable());
     }
     
     [Fact]
@@ -49,7 +49,7 @@ public class LnkListTests
         l.Add(15);
         l.Add(20);
         
-        Assert.Equal(new[] { 15, 20 }, l.ToArray());
+        Assert.Equal(new[] { 15, 20 }, l.ToEnumerable());
     }
     
     [Fact]
@@ -61,7 +61,7 @@ public class LnkListTests
         
         l.Add(20);
         
-        Assert.Equal(new[] { 10, 15, 20 }, l.ToArray());
+        Assert.Equal(new[] { 10, 15, 20 }, l.ToEnumerable());
     }
     
     [Fact]
@@ -70,7 +70,7 @@ public class LnkListTests
         var l = new LnkList<int>();
         l.Insert(0, 100);
         
-        Assert.Equal(new[] { 100 }, l.ToArray());
+        Assert.Equal(new[] { 100 }, l.ToEnumerable());
     }
     
     [Fact]
@@ -81,7 +81,7 @@ public class LnkListTests
         
         l.Insert(0, 100);
         
-        Assert.Equal(new[] { 100, 20 }, l.ToArray());
+        Assert.Equal(new[] { 100, 20 }, l.ToEnumerable());
     }
     
     [Fact]
@@ -93,7 +93,7 @@ public class LnkListTests
         
         l.Insert(1, 30);
         
-        Assert.Equal(new[] { 20, 30, 40 }, l.ToArray());
+        Assert.Equal(new[] { 20, 30, 40 }, l.ToEnumerable());
     }
     
     [Fact]
@@ -106,7 +106,7 @@ public class LnkListTests
         
         l.Insert(2, 40);
         
-        Assert.Equal(new[] { 20, 30, 40, 50 }, l.ToArray());
+        Assert.Equal(new[] { 20, 30, 40, 50 }, l.ToEnumerable());
     }
     
     [Fact]
@@ -127,5 +127,36 @@ public class LnkListTests
         l.Add(30);
         
         Assert.Equal(3, l.Count());
+    }
+    
+    [Fact]
+    public void Remove_Empty()
+    {
+        var l = new LnkList<string>();
+
+        Assert.False(l.Remove("A"));
+        Assert.Empty(l.ToEnumerable());
+    }
+    
+    [Fact]
+    public void Remove_OneElement_Found()
+    {
+        var l = new LnkList<string>();
+        l.Add("A");
+        
+        Assert.True(l.Remove("A"));
+        Assert.Empty(l.ToEnumerable());
+    }
+    
+    [Fact]
+    public void Remove_Many()
+    {
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("B");
+        l.Add("C");
+        
+        Assert.True(l.Remove("B"));
+        Assert.Equal(new[] { "A", "C" }, l.ToEnumerable());
     }
 }

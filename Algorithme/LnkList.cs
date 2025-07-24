@@ -71,7 +71,7 @@ public class LnkList<T>
     }
 
     // O(n)
-    public IEnumerable<T> ToArray()
+    public IEnumerable<T> ToEnumerable()
     {
         if (_head == null)
             return Array.Empty<T>();
@@ -102,5 +102,30 @@ public class LnkList<T>
             current = current.Next;
         }
         return count;
+    }
+
+    public bool Remove(T value)
+    {
+        if (_head == null)
+            return false;
+
+        if (_head.Value.Equals(value))
+        {
+            _head = null;
+            return true;
+        }
+
+        var current = _head;
+        while (current.Next != null)
+        {
+            if (current.Next.Value.Equals(value))
+            {
+                current.Next = current.Next.Next;
+                return true;
+            }
+            current = current.Next;
+        }
+
+        return false;
     }
 }
