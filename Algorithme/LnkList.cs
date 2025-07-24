@@ -6,33 +6,40 @@ public class LnkList
 
     public LnkList() => 
         _head = null;
-
+    
+    // O (1)
     public void Prepend(int value)
     {
+        // O (1)
         if (_head == null)
         {
             _head = new LnkListNode(value);
             return;
         }
-
-        _head = new LnkListNode(value, _head);
+        
+        // O (1)
+        _head = new LnkListNode(value, next: _head);
     }
-
+    
+    // O(n)
     public void Add(int value)
     {
+        // O(1)
         if (_head == null)
         {
             _head = new LnkListNode(value);
             return;
         }
-
+        
+        // O(n)
         var current = _head;
         while (current.Next != null) 
             current = current.Next;
 
         current.Next = new LnkListNode(value);
     }
-
+    
+    // O(n)
     public void Insert(int index, int value)
     {
         if (_head == null)
@@ -63,6 +70,7 @@ public class LnkList
         }
     }
 
+    // O(n)
     public IEnumerable<int> ToArray()
     {
         if (_head == null)
@@ -79,4 +87,21 @@ public class LnkList
 
         return result;
     }
+
+    public int Count()
+    {
+        if (_head == null)
+            return 0;
+
+        var current = _head;
+        var count = 0;
+        while (current != null)
+        {
+            count++;
+            current = current.Next;
+        }
+        return count;
+    }
+    
+    // TODO: Generic
 }

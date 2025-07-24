@@ -2,7 +2,7 @@
 {
     "Arlennys Maria Garcia Reyes",
     "Augusto Martinez Abreu",
-    "Jeffry Diaz",
+    // "Jeffry Diaz",
     "Dorley El Roi Tessa",
     "Oscar Roger Fanfan Nuñez",
     "Gary Modesto Gomez Maldonado",
