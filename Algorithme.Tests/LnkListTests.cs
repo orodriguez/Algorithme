@@ -159,4 +159,32 @@ public class LnkListTests
         Assert.True(l.Remove("B"));
         Assert.Equal(new[] { "A", "C" }, l.ToEnumerable());
     }
+    
+    [Fact]
+    public void ToReversedEnumerable()
+    {
+        var l = new LnkList<string>();
+        
+        Assert.Empty(l.ToReversedEnumerable());
+    }
+    
+    [Fact]
+    public void ToReversedEnumerable_OneElement()
+    {
+        var l = new LnkList<string>();
+        l.Add("A");
+        
+        Assert.Equal(new[] { "A" }, l.ToReversedEnumerable());
+    }
+    
+    [Fact]
+    public void ToReversedEnumerable_Many()
+    {
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("B");
+        l.Add("C");
+        
+        Assert.Equal(new[] { "C", "B", "A" }, l.ToReversedEnumerable());
+    }
 }

@@ -128,4 +128,9 @@ public class LnkList<T>
 
         return false;
     }
+
+    public IEnumerable<T> ToReversedEnumerable()
+    {
+        throw new NotImplementedException();
+    }
 }
