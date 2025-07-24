@@ -1,33 +1,33 @@
 namespace Algorithme;
 
-public class LnkList
+public class LnkList<T>
 {
-    private LnkListNode? _head;
+    private LnkListNode<T>? _head;
 
     public LnkList() => 
         _head = null;
     
     // O (1)
-    public void Prepend(int value)
+    public void Prepend(T value)
     {
         // O (1)
         if (_head == null)
         {
-            _head = new LnkListNode(value);
+            _head = new LnkListNode<T>(value);
             return;
         }
         
         // O (1)
-        _head = new LnkListNode(value, next: _head);
+        _head = new LnkListNode<T>(value, next: _head);
     }
     
     // O(n)
-    public void Add(int value)
+    public void Add(T value)
     {
         // O(1)
         if (_head == null)
         {
-            _head = new LnkListNode(value);
+            _head = new LnkListNode<T>(value);
             return;
         }
         
@@ -36,15 +36,15 @@ public class LnkList
         while (current.Next != null) 
             current = current.Next;
 
-        current.Next = new LnkListNode(value);
+        current.Next = new LnkListNode<T>(value);
     }
     
     // O(n)
-    public void Insert(int index, int value)
+    public void Insert(int index, T value)
     {
         if (_head == null)
         {
-            _head = new LnkListNode(value);
+            _head = new LnkListNode<T>(value);
             return;
         }
 
@@ -61,7 +61,7 @@ public class LnkList
         {
             if (i == index - 1)
             {
-                current.Next = new LnkListNode(value, current.Next);
+                current.Next = new LnkListNode<T>(value, current.Next);
                 return;
             }
 
@@ -71,12 +71,12 @@ public class LnkList
     }
 
     // O(n)
-    public IEnumerable<int> ToArray()
+    public IEnumerable<T> ToArray()
     {
         if (_head == null)
-            return Array.Empty<int>();
+            return Array.Empty<T>();
         
-        var result = new List<int>();
+        var result = new List<T>();
 
         var current = _head;
         while (current != null)
@@ -87,7 +87,8 @@ public class LnkList
 
         return result;
     }
-
+    
+    // O(n)
     public int Count()
     {
         if (_head == null)
@@ -102,6 +103,4 @@ public class LnkList
         }
         return count;
     }
-    
-    // TODO: Generic
 }

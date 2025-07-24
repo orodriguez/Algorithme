@@ -1,12 +1,12 @@
 ﻿namespace Algorithme;
 
-public class LnkListNode
+public class LnkListNode<T>
 {
-    public int Value { get; }
+    public T Value { get; }
 
-    public LnkListNode? Next { get; set; }
+    public LnkListNode<T>? Next { get; set; }
 
-    public LnkListNode(int value, LnkListNode? next = null)
+    public LnkListNode(T value, LnkListNode<T>? next = null)
     {
         Value = value;
         Next = next;

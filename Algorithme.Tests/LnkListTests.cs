@@ -5,7 +5,7 @@ public class LnkListTests
     [Fact]
     public void ToArrayEmpty()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
 
         Assert.Equal(Array.Empty<int>(), l.ToArray());
     }
@@ -13,7 +13,7 @@ public class LnkListTests
     [Fact]
     public void Prepend_Empty()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
         
         l.Prepend(5);
         
@@ -23,28 +23,28 @@ public class LnkListTests
     [Fact]
     public void Prepend_OneElement()
     {
-        var l = new LnkList();
+        var l = new LnkList<string>();
         
-        l.Prepend(10);
-        l.Prepend(5);
+        l.Prepend("B");
+        l.Prepend("A");
         
-        Assert.Equal(new[] { 5, 10 }, l.ToArray());
+        Assert.Equal(new[] { "A", "B" }, l.ToArray());
     }
     
     [Fact]
     public void Add_Empty()
     {
-        var l = new LnkList();
+        var l = new LnkList<float>();
 
-        l.Add(15);
+        l.Add(15.8f);
         
-        Assert.Equal(new[] { 15 }, l.ToArray());
+        Assert.Equal(new[] { 15.8f }, l.ToArray());
     }
     
     [Fact]
     public void Add_OneNode()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
 
         l.Add(15);
         l.Add(20);
@@ -55,7 +55,7 @@ public class LnkListTests
     [Fact]
     public void Add_ListHasTwoValues()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
         l.Add(10);
         l.Add(15);
         
@@ -67,7 +67,7 @@ public class LnkListTests
     [Fact]
     public void Insert_Empty()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
         l.Insert(0, 100);
         
         Assert.Equal(new[] { 100 }, l.ToArray());
@@ -76,7 +76,7 @@ public class LnkListTests
     [Fact]
     public void Insert_OneElement()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
         l.Add(20);
         
         l.Insert(0, 100);
@@ -87,7 +87,7 @@ public class LnkListTests
     [Fact]
     public void Insert_TwoElement()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
         l.Add(20);
         l.Add(40);
         
@@ -99,7 +99,7 @@ public class LnkListTests
     [Fact]
     public void Insert_ThreeElement()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
         l.Add(20);
         l.Add(30);
         l.Add(50);
@@ -112,7 +112,7 @@ public class LnkListTests
     [Fact]
     public void Count_Empty()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
         
         Assert.Equal(0, l.Count());
     }
@@ -120,7 +120,7 @@ public class LnkListTests
     [Fact]
     public void Count_ManyElements()
     {
-        var l = new LnkList();
+        var l = new LnkList<int>();
 
         l.Add(10);
         l.Add(20);
