@@ -3,40 +3,38 @@ namespace Algorithme;
 public class LnkList<T>
 {
     private LnkListNode<T>? _head;
+    private LnkListNode<T>? _last;
 
     public LnkList() => 
-        _head = null;
-    
+        _head = _last = null;
+
     // O (1)
     public void Prepend(T value)
     {
         // O (1)
         if (_head == null)
         {
-            _head = new LnkListNode<T>(value);
+            _head = _last = new LnkListNode<T>(value);
             return;
         }
         
         // O (1)
-        _head = new LnkListNode<T>(value, next: _head);
+        _head = new LnkListNode<T>(value, previous: null, next: _head);
     }
     
     // O(n)
     public void Add(T value)
     {
         // O(1)
-        if (_head == null)
+        if (_last == null)
         {
-            _head = new LnkListNode<T>(value);
+            _head = _last = new LnkListNode<T>(value);
             return;
         }
-        
-        // O(n)
-        var current = _head;
-        while (current.Next != null) 
-            current = current.Next;
 
-        current.Next = new LnkListNode<T>(value);
+        var newNode = new LnkListNode<T>(value, previous: _last, next: null);
+        _last.Next = newNode;
+        _last = newNode;
     }
     
     // O(n)
@@ -57,11 +55,18 @@ public class LnkList<T>
         var i = 0;
         var current = _head;
 
-        while (current.Next != null)
+        while (current != null)
         {
-            if (i == index - 1)
+            if (i == index)
             {
-                current.Next = new LnkListNode<T>(value, current.Next);
+                var previous = current.Previous;
+                
+                var newNode = new LnkListNode<T>(value);
+                newNode.Previous = previous;
+                newNode.Next = current;
+                
+                previous!.Next = newNode;
+                current.Previous = newNode;
                 return;
             }
 
@@ -131,6 +136,17 @@ public class LnkList<T>
 
     public IEnumerable<T> ToReversedEnumerable()
     {
-        throw new NotImplementedException();
+        if (_last == null)
+            return Array.Empty<T>();
+        
+        var result = new List<T>();
+        var current = _last;
+        while (current != null)
+        {
+            result.Add(current.Value);
+            current = current.Previous;
+        }
+
+        return result;
     }
 }

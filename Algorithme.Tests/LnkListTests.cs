@@ -53,7 +53,7 @@ public class LnkListTests
     }
     
     [Fact]
-    public void Add_ListHasTwoValues()
+    public void Add_Many()
     {
         var l = new LnkList<int>();
         l.Add(10);
@@ -87,26 +87,26 @@ public class LnkListTests
     [Fact]
     public void Insert_TwoElement()
     {
-        var l = new LnkList<int>();
-        l.Add(20);
-        l.Add(40);
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("C");
         
-        l.Insert(1, 30);
+        l.Insert(1, "B");
         
-        Assert.Equal(new[] { 20, 30, 40 }, l.ToEnumerable());
+        Assert.Equal(new[] { "A", "B", "C" }, l.ToEnumerable());
     }
     
     [Fact]
     public void Insert_ThreeElement()
     {
-        var l = new LnkList<int>();
-        l.Add(20);
-        l.Add(30);
-        l.Add(50);
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("C");
+        l.Add("D");
         
-        l.Insert(2, 40);
+        l.Insert(1, "B");
         
-        Assert.Equal(new[] { 20, 30, 40, 50 }, l.ToEnumerable());
+        Assert.Equal(new[] { "A", "B", "C", "D" }, l.ToEnumerable());
     }
     
     [Fact]
@@ -161,7 +161,7 @@ public class LnkListTests
     }
     
     [Fact]
-    public void ToReversedEnumerable()
+    public void ToReversedEnumerable_Empty()
     {
         var l = new LnkList<string>();
         
