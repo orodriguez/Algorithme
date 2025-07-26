@@ -19,7 +19,9 @@ public class LnkList<T>
         }
         
         // O (1)
-        _head = new LnkListNode<T>(value, previous: null, next: _head);
+        var newNode = new LnkListNode<T>(value);
+        newNode.Link(_head);
+        _head = newNode;
     }
     
     // O(1)
@@ -42,7 +44,7 @@ public class LnkList<T>
     {
         if (_head == null)
         {
-            _head = new LnkListNode<T>(value);
+            _head = _last = new LnkListNode<T>(value);
             return;
         }
 

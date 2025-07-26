@@ -7,9 +7,9 @@ public class LnkListTests
     {
         var l = new LnkList<int>();
 
-        Assert.Equal(Array.Empty<int>(), l.ToEnumerable());
+        AssertListLinks(Array.Empty<int>(), l);
     }
-    
+
     [Fact]
     public void Prepend_Empty()
     {
@@ -17,9 +17,9 @@ public class LnkListTests
         
         l.Prepend(5);
         
-        Assert.Equal(new[] { 5 }, l.ToEnumerable());
+        AssertListLinks(new[] { 5 }, l);
     }
-    
+
     [Fact]
     public void Prepend_OneElement()
     {
@@ -28,9 +28,9 @@ public class LnkListTests
         l.Prepend("B");
         l.Prepend("A");
         
-        Assert.Equal(new[] { "A", "B" }, l.ToEnumerable());
+        AssertListLinks(new[] { "A", "B" }, l);
     }
-    
+
     [Fact]
     public void Add_Empty()
     {
@@ -38,9 +38,9 @@ public class LnkListTests
 
         l.Add(15.8f);
         
-        Assert.Equal(new[] { 15.8f }, l.ToEnumerable());
+        AssertListLinks(new[] { 15.8f }, l);
     }
-    
+
     [Fact]
     public void Add_OneNode()
     {
@@ -49,41 +49,40 @@ public class LnkListTests
         l.Add(15);
         l.Add(20);
         
-        Assert.Equal(new[] { 15, 20 }, l.ToEnumerable());
+        AssertListLinks(new[] { 15, 20 }, l);
     }
-    
+
     [Fact]
     public void Add_Many()
     {
         var l = new LnkList<int>();
         l.Add(10);
         l.Add(15);
-        
         l.Add(20);
         
-        Assert.Equal(new[] { 10, 15, 20 }, l.ToEnumerable());
+        AssertListLinks(new[] { 10, 15, 20 }, l);
     }
-    
+
     [Fact]
     public void Insert_Empty()
     {
         var l = new LnkList<int>();
         l.Insert(0, 100);
         
-        Assert.Equal(new[] { 100 }, l.ToEnumerable());
+        AssertListLinks(new[] { 100 }, l);
     }
-    
+
     [Fact]
     public void Insert_OneElement()
     {
-        var l = new LnkList<int>();
-        l.Add(20);
+        var l = new LnkList<string>();
+        l.Add("B");
         
-        l.Insert(0, 100);
+        l.Insert(0, "A");
         
-        Assert.Equal(new[] { 100, 20 }, l.ToEnumerable());
+        AssertListLinks(new[] { "A", "B" }, l);
     }
-    
+
     [Fact]
     public void Insert_TwoElement()
     {
@@ -93,9 +92,9 @@ public class LnkListTests
         
         l.Insert(1, "B");
         
-        Assert.Equal(new[] { "A", "B", "C" }, l.ToEnumerable());
+        AssertListLinks(new[] { "A", "B", "C" }, l);
     }
-    
+
     [Fact]
     public void Insert_ThreeElement()
     {
@@ -106,9 +105,9 @@ public class LnkListTests
         
         l.Insert(1, "B");
         
-        Assert.Equal(new[] { "A", "B", "C", "D" }, l.ToEnumerable());
+        AssertListLinks(new[] { "A", "B", "C", "D" }, l);
     }
-    
+
     [Fact]
     public void Count_Empty()
     {
@@ -116,7 +115,7 @@ public class LnkListTests
         
         Assert.Equal(0, l.Count());
     }
-    
+
     [Fact]
     public void Count_ManyElements()
     {
@@ -128,16 +127,16 @@ public class LnkListTests
         
         Assert.Equal(3, l.Count());
     }
-    
+
     [Fact]
     public void Remove_Empty()
     {
         var l = new LnkList<string>();
 
         Assert.False(l.Remove("A"));
-        Assert.Empty(l.ToEnumerable());
+        AssertListLinks(Array.Empty<string>(), l);
     }
-    
+
     [Fact]
     public void Remove_OneElement_Found()
     {
@@ -145,9 +144,9 @@ public class LnkListTests
         l.Add("A");
         
         Assert.True(l.Remove("A"));
-        Assert.Empty(l.ToEnumerable());
+        AssertListLinks(Array.Empty<string>(), l);
     }
-    
+
     [Fact]
     public void Remove_Many()
     {
@@ -157,26 +156,26 @@ public class LnkListTests
         l.Add("C");
         
         Assert.True(l.Remove("B"));
-        Assert.Equal(new[] { "A", "C" }, l.ToEnumerable());
+        AssertListLinks(new[] { "A", "C" }, l);
     }
-    
+
     [Fact]
     public void ToReversedEnumerable_Empty()
     {
         var l = new LnkList<string>();
         
-        Assert.Empty(l.ToReversedEnumerable());
+        AssertListLinks(Array.Empty<string>(), l);
     }
-    
+
     [Fact]
     public void ToReversedEnumerable_OneElement()
     {
         var l = new LnkList<string>();
         l.Add("A");
         
-        Assert.Equal(new[] { "A" }, l.ToReversedEnumerable());
+        AssertListLinks(new[] { "A" }, l);
     }
-    
+
     [Fact]
     public void ToReversedEnumerable_Many()
     {
@@ -185,6 +184,12 @@ public class LnkListTests
         l.Add("B");
         l.Add("C");
         
-        Assert.Equal(new[] { "C", "B", "A" }, l.ToReversedEnumerable());
+        AssertListLinks(new[] { "A", "B", "C" }, l);
+    }
+
+    private void AssertListLinks<T>(T[] expected, LnkList<T> list)
+    {
+        Assert.Equal(expected, list.ToEnumerable());
+        Assert.Equal(expected.Reverse(), list.ToReversedEnumerable());
     }
 }
