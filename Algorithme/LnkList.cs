@@ -22,7 +22,7 @@ public class LnkList<T>
         _head = new LnkListNode<T>(value, previous: null, next: _head);
     }
     
-    // O(n)
+    // O(1)
     public void Add(T value)
     {
         // O(1)
@@ -32,8 +32,8 @@ public class LnkList<T>
             return;
         }
 
-        var newNode = new LnkListNode<T>(value, previous: _last, next: null);
-        _last.Next = newNode;
+        var newNode = new LnkListNode<T>(value);
+        _last.Link(newNode);
         _last = newNode;
     }
     
@@ -59,14 +59,9 @@ public class LnkList<T>
         {
             if (i == index)
             {
-                var previous = current.Previous;
-                
                 var newNode = new LnkListNode<T>(value);
-                newNode.Previous = previous;
-                newNode.Next = current;
-                
-                previous!.Next = newNode;
-                current.Previous = newNode;
+                current.Previous!.Link(newNode);
+                newNode.Link(current);
                 return;
             }
 
@@ -116,16 +111,16 @@ public class LnkList<T>
 
         if (_head.Value.Equals(value))
         {
-            _head = null;
+            _head = _last= null;
             return true;
         }
 
         var current = _head;
-        while (current.Next != null)
+        while (current != null)
         {
-            if (current.Next.Value.Equals(value))
+            if (current.Value.Equals(value))
             {
-                current.Next = current.Next.Next;
+                current.Previous.Link(current.Next);
                 return true;
             }
             current = current.Next;
