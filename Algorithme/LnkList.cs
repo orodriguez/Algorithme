@@ -4,6 +4,7 @@ public class LnkList<T>
 {
     private LnkListNode<T>? _head;
     private LnkListNode<T>? _last;
+    private int _count = 0;
 
     public LnkList() => 
         _head = _last = null;
@@ -15,6 +16,7 @@ public class LnkList<T>
         if (_head == null)
         {
             _head = _last = new LnkListNode<T>(value);
+            _count++;
             return;
         }
         
@@ -22,6 +24,7 @@ public class LnkList<T>
         var newNode = new LnkListNode<T>(value);
         newNode.Link(_head);
         _head = newNode;
+        _count++;
     }
     
     // O(1)
@@ -31,20 +34,26 @@ public class LnkList<T>
         if (_last == null)
         {
             _head = _last = new LnkListNode<T>(value);
+            _count++;
             return;
         }
 
         var newNode = new LnkListNode<T>(value);
         _last.Link(newNode);
         _last = newNode;
+        _count++;
     }
     
     // O(n)
     public void Insert(int index, T value)
     {
+        if (index < 0 || index > Count())
+            throw new ArgumentOutOfRangeException(nameof(index));
+        
         if (_head == null)
         {
             _head = _last = new LnkListNode<T>(value);
+            _count++;
             return;
         }
 
@@ -64,6 +73,7 @@ public class LnkList<T>
                 var newNode = new LnkListNode<T>(value);
                 current.Previous!.Link(newNode);
                 newNode.Link(current);
+                _count++;
                 return;
             }
 
@@ -90,21 +100,8 @@ public class LnkList<T>
         return result;
     }
     
-    // O(n)
-    public int Count()
-    {
-        if (_head == null)
-            return 0;
-
-        var current = _head;
-        var count = 0;
-        while (current != null)
-        {
-            count++;
-            current = current.Next;
-        }
-        return count;
-    }
+    // O(1)
+    public int Count() => _count;
 
     public bool Remove(T value)
     {
@@ -114,6 +111,7 @@ public class LnkList<T>
         if (_head.Value.Equals(value))
         {
             _head = _last= null;
+            _count = 0;
             return true;
         }
 
@@ -123,6 +121,7 @@ public class LnkList<T>
             if (current.Value.Equals(value))
             {
                 current.Previous.Link(current.Next);
+                _count--;
                 return true;
             }
             current = current.Next;

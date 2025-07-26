@@ -107,6 +107,34 @@ public class LnkListTests
         
         AssertListLinks(new[] { "A", "B", "C", "D" }, l);
     }
+    
+    [Fact]
+    public void Insert_IndexOutOfRange()
+    {
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("B");
+
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(
+            () => l.Insert(5, "X"));
+        
+        Assert.Contains("argument was out of the range", 
+            exception.Message);
+    }
+    
+    [Fact]
+    public void Insert_IndexOutOfRange_Negative()
+    {
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("B");
+
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(
+            () => l.Insert(-2, "X"));
+        
+        Assert.Contains("argument was out of the range", 
+            exception.Message);
+    }
 
     [Fact]
     public void Count_Empty()
@@ -191,5 +219,6 @@ public class LnkListTests
     {
         Assert.Equal(expected, list.ToEnumerable());
         Assert.Equal(expected.Reverse(), list.ToReversedEnumerable());
+        Assert.Equal(expected.Length, list.Count());
     }
 }
