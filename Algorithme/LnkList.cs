@@ -145,4 +145,75 @@ public class LnkList<T>
 
         return result;
     }
+    
+    public IEnumerable<T> RemoveFirst()
+    {
+         
+        // Vacio
+        if (_head == null || _count == 0)
+            return Array.Empty<T>();
+        
+        var result = new List<T>();
+        // solo un nodo
+        if (_head == _last)
+        {
+            _head = null;
+            _last = null;
+        }
+        else
+        {
+            var newHead = _head.Next;
+            _head.Next = null;
+            _head.Previous = null;
+            _head = newHead;
+            _head.Previous = null;
+            
+            var current =  _head;
+            while (current != null)
+            {   
+                result.Add(current.Value);
+                current = current.Next;
+            }
+           
+        }
+        _count--;
+
+        return result;
+    }
+    
+    public IEnumerable<T> RemoveLast()
+    {
+         
+        // Vacio
+        if (_last == null || _count == 0)
+            return Array.Empty<T>();
+        
+        var result = new List<T>();
+        // solo un nodo
+        if (_head == _last)
+        {
+            _head = null;
+            _last = null;
+        }
+        else
+        {
+            var newLast = _last.Previous;
+            _last.Next = null;
+            _last.Previous = null;
+            _last = newLast;
+            _last.Next = null;
+            
+            var current =  _last;
+            while (current != null)
+            {   
+                result.Add(current.Value);
+                current = current.Previous;
+            }
+           
+        }
+        _count--;
+
+        return result;
+    }
+
 }

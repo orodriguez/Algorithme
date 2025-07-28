@@ -139,7 +139,7 @@ public class LnkListTests
     [Fact]
     public void Count_Empty()
     {
-        var l = new LnkList<int>();
+       var l = new LnkList<int>(); 
         
         Assert.Equal(0, l.Count());
     }
@@ -214,11 +214,82 @@ public class LnkListTests
         
         AssertListLinks(new[] { "A", "B", "C" }, l);
     }
-
+    
+    
     private void AssertListLinks<T>(T[] expected, LnkList<T> list)
     {
         Assert.Equal(expected, list.ToEnumerable());
         Assert.Equal(expected.Reverse(), list.ToReversedEnumerable());
         Assert.Equal(expected.Length, list.Count());
     }
+    
+    [Fact]
+    public void RemoveFirst_Empty()
+    {
+        //funcionando
+        var l = new LnkList<string>();
+        
+        l.RemoveFirst();
+        
+        AssertListLinks(Array.Empty<string>(), l);
+    }
+    
+    [Fact]
+    public void RemoveFirst_OnlyOneElement()
+    {
+        //funcionando
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.RemoveFirst();
+        
+        AssertListLinks(Array.Empty<string>(), l);
+    }
+    
+    [Fact]
+    public void RemoveFirst_Many()
+    {
+        //pendiente
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("B");
+        l.Add("C");
+        l.RemoveFirst();
+        
+        AssertListLinks(new[] { "B", "C" }, l);
+    }
+    
+    [Fact]
+    public void RemoveLast_Empty()
+    {
+        //funcionando
+        var l = new LnkList<string>();
+        
+        l.RemoveLast();
+        
+        AssertListLinks(Array.Empty<string>(), l);
+    }
+    
+    [Fact]
+    public void RemoveLast_OnlyOneElement()
+    {
+        //funcionando
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.RemoveLast();
+        
+        AssertListLinks(Array.Empty<string>(), l);
+    }
+    
+    [Fact]
+    public void RemoveLast_Many()
+    {
+        var l = new LnkList<string>();
+        l.Add("A");
+        l.Add("B");
+        l.Add("C");
+        l.RemoveLast();
+        
+        AssertListLinks(new[] { "A", "B" }, l);
+    }
+    
 }

@@ -3,8 +3,8 @@
 public class LnkListNode<T>
 {
     public T Value { get; }
-    public LnkListNode<T>? Next { get; private set; }
-    public LnkListNode<T>? Previous { get; private set; }
+    public LnkListNode<T>? Next { get; set; }
+    public LnkListNode<T>? Previous { get; set; }
     public LnkListNode(T value, LnkListNode<T>? previous = null, LnkListNode<T>? next = null)
     {
         Value = value;
