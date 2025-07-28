@@ -209,4 +209,4 @@ public class LnkList<T>
             current = current.Previous;
         }
     }
-}
+} //Dorley El Roi Tessa

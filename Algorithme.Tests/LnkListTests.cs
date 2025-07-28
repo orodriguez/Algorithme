@@ -236,4 +236,4 @@ public class LnkListTests
 
         Assert.Equal(new[] { 1, 2, 3 }, list.ToEnumerable());
     }
-}
+}  //Dorley El Roi Tessa
