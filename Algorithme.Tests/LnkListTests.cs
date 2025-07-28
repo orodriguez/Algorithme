@@ -187,4 +187,53 @@ public class LnkListTests
         
         Assert.Equal(new[] { "C", "B", "A" }, l.ToReversedEnumerable());
     }
+    [Fact]
+    public void Contains_ValueExists_ReturnsTrue()
+    {
+        var list = new LnkList<int>();
+        list.Add(10);
+        list.Add(20);
+        list.Add(30);
+
+        Assert.True(list.Contains(20));
+    }
+
+    [Fact]
+    public void Contains_ValueDoesNotExist_ReturnsFalse()
+    {
+        var list = new LnkList<int>();
+        list.Add(10);
+        list.Add(20);
+        list.Add(30);
+
+        Assert.False(list.Contains(99));
+    }
+
+    [Fact]
+    public void RemoveFirst_OnlyFirstOccurrenceRemoved()
+    {
+        var list = new LnkList<int>();
+        list.Add(1);
+        list.Add(2);
+        list.Add(3);
+        list.Add(2); // duplicate
+
+        list.RemoveFirst(2);
+
+        Assert.Equal(new[] { 1, 3, 2 }, list.ToEnumerable());
+    }
+
+    [Fact]
+    public void RemoveLast_OnlyLastOccurrenceRemoved()
+    {
+        var list = new LnkList<int>();
+        list.Add(1);
+        list.Add(2);
+        list.Add(3);
+        list.Add(2); // duplicate
+
+        list.RemoveLast(2);
+
+        Assert.Equal(new[] { 1, 2, 3 }, list.ToEnumerable());
+    }
 }

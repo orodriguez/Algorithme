@@ -3,10 +3,11 @@ namespace Algorithme;
 public class LnkList<T>
 {
     private LnkListNode<T>? _head;
+    private LnkListNode<T>? _last;
 
-    public LnkList() => 
+    public LnkList() =>
         _head = null;
-    
+
     // O (1)
     public void Prepend(T value)
     {
@@ -16,29 +17,32 @@ public class LnkList<T>
             _head = new LnkListNode<T>(value);
             return;
         }
-        
+
         // O (1)
         _head = new LnkListNode<T>(value, next: _head);
     }
-    
+
     // O(n)
     public void Add(T value)
     {
-        // O(1)
+        var newNode = new LnkListNode<T>(value);
+
         if (_head == null)
         {
-            _head = new LnkListNode<T>(value);
+            _head = newNode;
+            _last = newNode;
             return;
         }
-        
-        // O(n)
+
         var current = _head;
-        while (current.Next != null) 
+        while (current.Next != null)
             current = current.Next;
 
-        current.Next = new LnkListNode<T>(value);
+        current.Next = newNode;
+        newNode.Previous = current;
+        _last = newNode;
     }
-    
+
     // O(n)
     public void Insert(int index, T value)
     {
@@ -75,7 +79,7 @@ public class LnkList<T>
     {
         if (_head == null)
             return Array.Empty<T>();
-        
+
         var result = new List<T>();
 
         var current = _head;
@@ -87,7 +91,7 @@ public class LnkList<T>
 
         return result;
     }
-    
+
     // O(n)
     public int Count()
     {
@@ -101,6 +105,7 @@ public class LnkList<T>
             count++;
             current = current.Next;
         }
+
         return count;
     }
 
@@ -109,7 +114,7 @@ public class LnkList<T>
         if (_head == null)
             return false;
 
-        if (_head.Value.Equals(value))
+        if (_head.Value != null && _head.Value.Equals(value))
         {
             _head = null;
             return true;
@@ -118,11 +123,12 @@ public class LnkList<T>
         var current = _head;
         while (current.Next != null)
         {
-            if (current.Next.Value.Equals(value))
+            if (current.Next.Value != null && current.Next.Value.Equals(value))
             {
                 current.Next = current.Next.Next;
                 return true;
             }
+
             current = current.Next;
         }
 
@@ -131,6 +137,76 @@ public class LnkList<T>
 
     public IEnumerable<T> ToReversedEnumerable()
     {
-        throw new NotImplementedException();
+        var current = _last;
+        while (current != null)
+        {
+            yield return current.Value;
+            current = current.Previous;
+        }
+    }
+    // O(n)
+    public bool Contains(T value)
+    {
+        var current = _head;
+        while (current != null)
+        {
+            if (current.Value != null && current.Value.Equals(value))
+                return true;
+
+            current = current.Next;
+        }
+        return false;
+    }
+
+// O(n)
+    public void RemoveFirst(T value)
+    {
+        var current = _head;
+
+        while (current != null)
+        {
+            if (current.Value != null && current.Value.Equals(value))
+            {
+                if (current.Previous != null)
+                    current.Previous.Next = current.Next;
+                else
+                    _head = current.Next;
+
+                if (current.Next != null)
+                    current.Next.Previous = current.Previous;
+                else
+                    _last = current.Previous;
+
+                return;
+            }
+
+            current = current.Next;
+        }
+    }
+
+// O(n)
+    public void RemoveLast(T value)
+    {
+        var current = _last;
+
+        while (current != null)
+        {
+            if (current.Value != null && current.Value.Equals(value))
+            {
+                if (current.Previous != null)
+                    current.Previous.Next = current.Next;
+                else
+                    _head = current.Next;
+
+                if (current.Next != null)
+                    current.Next.Previous = current.Previous;
+                else
+                    _last = current.Previous;
+
+                return; 
+            }
+
+            current = current.Previous;
+        }
     }
 }
