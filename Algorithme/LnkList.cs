@@ -1,6 +1,8 @@
+using System.Collections;
+
 namespace Algorithme;
 
-public class LnkList<T>
+public class LnkList<T> : IEnumerable<T>
 {
     private LnkListNode<T>? _head;
     private LnkListNode<T>? _last;
@@ -144,5 +146,26 @@ public class LnkList<T>
         }
 
         return result;
+    }
+
+    public IEnumerator<T> GetEnumerator() => ToEnumerable().GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => 
+        GetEnumerator();
+
+    public int IndexOf(T value)
+    {
+        if (_head == null)
+            return -1;
+
+        var index = 0;
+        var current = _head;
+        while (current != null)
+        {
+            index++;
+            current = current.Next;
+        }
+
+        return index;
     }
 }
