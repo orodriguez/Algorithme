@@ -5,7 +5,7 @@ public class HashMapTests
     [Fact]
     public void SetAndGet()
     {
-        var d = new HashMap();
+        var d = new HashMap<char, int>();
 
         d['a'] = 1;
 
@@ -15,7 +15,7 @@ public class HashMapTests
     [Fact]
     public void Collision()
     {
-        var d = new HashMap(3);
+        var d = new HashMap<char, int>(3);
 
         d['a'] = 1;
         d['b'] = 2;
@@ -31,7 +31,7 @@ public class HashMapTests
     [Fact]
     public void Override()
     {
-        var d = new HashMap(3);
+        var d = new HashMap<char, int>(3);
 
         d['a'] = 1;
         d['a'] = 2;
@@ -42,10 +42,20 @@ public class HashMapTests
     }
     
     [Fact]
-    public void KeynNotFound()
+    public void KeyNotFound()
     {
-        var d = new HashMap(3);
+        var d = new HashMap<string, bool>(3);
 
-        Assert.Throws<KeyNotFoundException>(() => d['a']);
+        Assert.Throws<KeyNotFoundException>(() => d["a"]);
+    }
+    
+    [Fact]
+    public void Generic()
+    {
+        var d = new HashMap<string, string>();
+
+        d["hello"] = "world";
+
+        Assert.Equal("world", d["hello"]);
     }
 }

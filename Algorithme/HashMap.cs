@@ -1,6 +1,6 @@
 namespace Algorithme;
 
-public class HashMap
+public class HashMap<TKey, TValue>
 {
     private readonly Bucket[] _buckets;
     private readonly int _capacity;
@@ -13,53 +13,53 @@ public class HashMap
             _buckets[i] = new Bucket();
     }
 
-    public int this[char key]
+    public TValue this[TKey key]
     {
         get => Get(key);
         set => Set(key, value);
     }
     
     // O(1)
-    private int Get(char key)
+    private TValue Get(TKey key)
     {
         var index = Hash(key);
         var bucket = _buckets[index]; 
         return bucket.Get(key);
     }
     
-    // O(1)
-    private void Set(char key, int value)
+    // O(n) | O(1)
+    private void Set(TKey key, TValue value)
     {
         var index = Hash(key);
         var bucket = _buckets[index];
         bucket.Set(key, value);
     }
 
-    private int Hash(char key) => 
-        key % _capacity;
+    private int Hash(TKey key) => 
+        Math.Abs(key.GetHashCode()) % _capacity;
 
     private class Bucket
     {
-        private readonly LinkedList<(char key, int value)> _values;
+        private readonly LinkedList<(TKey key, TValue value)> _values;
 
         public Bucket() => 
-            _values = new LinkedList<(char key, int value)>();
+            _values = new LinkedList<(TKey key, TValue value)>();
 
-        public int Get(char key)
+        public TValue Get(TKey key)
         {
-            var keyValue = _values.FirstOrDefault(kv => kv.key == key);
+            var keyValue = _values.FirstOrDefault(kv => Equals(kv.key, key));
 
-            if (keyValue.key != key)
+            if (Equals(keyValue.key, default(TKey)))
                 throw new KeyNotFoundException();
             
             return keyValue.value;
         }
 
-        public void Set(char key, int value)
+        public void Set(TKey key, TValue value)
         {
-            var keyValue = _values.FirstOrDefault(kv => kv.key == key);
+            var keyValue = _values.FirstOrDefault(kv => Equals(kv.key, key));
 
-            if (keyValue.key == key)
+            if (!Equals(keyValue.key, default(TKey)))
                 _values.Remove(keyValue);
             
             _values.AddLast((key, value));

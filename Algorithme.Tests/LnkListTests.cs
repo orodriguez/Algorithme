@@ -186,6 +186,18 @@ public class LnkListTests
         Assert.True(l.Remove("B"));
         AssertListLinks(new[] { "A", "C" }, l);
     }
+    
+    [Fact]
+    public void Remove_Many_Tuples()
+    {
+        var l = new LnkList<(char, int)>();
+        l.Add(('a', 1));
+        l.Add(('b', 2));
+        l.Add(('c', 3));
+        
+        Assert.True(l.Remove(('b', 2)));
+        AssertListLinks(new[] { ('a', 1), ('c', 3) }, l);
+    }
 
     [Fact]
     public void ToReversedEnumerable_Empty()
