@@ -4,6 +4,7 @@ public class TreeNode<T>
 {
     public T Value { get; set; }
     public List<TreeNode<T>> Children { get; set; }
+    public int Level => throw new NotImplementedException();
 
     public TreeNode(T value)
     {
@@ -18,6 +19,7 @@ public class TreeNode<T>
         return child;
     }
 
+    // O(n)
     public int Count() => 
         1 + Children.Sum(node => node.Count());
 
@@ -31,5 +33,32 @@ public class TreeNode<T>
         return Children
             .Select(child => child.Search(value))
             .FirstOrDefault(node => node != null);
+    }
+
+    public void PreOrderTraverse(Action<TreeNode<T>> action)
+    {
+        action(this);
+
+        foreach (var child in Children) 
+            child.PreOrderTraverse(action);
+    }
+
+    public void PostOrderTraverse(Action<TreeNode<T>> action)
+    {
+        foreach (var child in Children) 
+            child.PostOrderTraverse(action);
+        
+        action(this);
+    }
+    
+    public int Height()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void LevelTraverse(Action<TreeNode<T>> action)
+    {
+        // Hint: Use Level
+        throw new NotImplementedException();
     }
 }
