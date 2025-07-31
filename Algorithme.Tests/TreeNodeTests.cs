@@ -52,26 +52,48 @@ public class TreeNodeTests
         
         Assert.Equal(4, goku.Count());
     }
-}
 
-public class TreeNode<T>
-{
-    public T Value { get; set; }
-    public List<TreeNode<T>> Children { get; set; }
-
-    public TreeNode(T value)
+    [Fact]
+    public void Search_One()
     {
-        Value = value;
-        Children = new List<TreeNode<T>>();
+        var root = new TreeNode<int>(10);
+
+        var node = root.Search(10);
+        
+        Assert.NotNull(node);
+        Assert.Equal(10, node.Value);
+    }
+    
+    [Fact]
+    public void Search_NotFound()
+    {
+        var root = new TreeNode<int>(10);
+
+        var node = root.Search(50);
+        Assert.Null(node);
     }
 
-    public TreeNode<T> Add(T childValue)
+    [Fact]
+    public void Search_Children()
     {
-        var child = new TreeNode<T>(childValue);
-        Children.Add(child);
-        return child;
+        var goku = new TreeNode<string>("Goku");
+        goku.Add("Gohan");
+        
+        var child = goku.Search("Gohan");
+        
+        Assert.NotNull(child);
+        Assert.Equal("Gohan", child.Value);
     }
-
-    public int Count() => 
-        1 + Children.Sum(node => node.Count());
+    
+    [Fact]
+    public void Search_GrandChildren()
+    {
+        var root = new TreeNode<string>("Goku");
+        root.Add("Gohan").Add("Pan");
+        
+        var child = root.Search("Pan");
+        
+        Assert.NotNull(child);
+        Assert.Equal("Pan", child.Value);
+    }
 }
