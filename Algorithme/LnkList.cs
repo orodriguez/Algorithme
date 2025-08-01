@@ -1,50 +1,61 @@
+using System.Collections;
+
 namespace Algorithme;
 
-public class LnkList<T>
+public class LnkList<T> : IEnumerable<T>
 {
     private LnkListNode<T>? _head;
+    private LnkListNode<T>? _last;
+    private int _count = 0;
 
     public LnkList() => 
-        _head = null;
-    
+        _head = _last = null;
+
     // O (1)
     public void Prepend(T value)
     {
         // O (1)
         if (_head == null)
         {
-            _head = new LnkListNode<T>(value);
+            _head = _last = new LnkListNode<T>(value);
+            _count++;
             return;
         }
         
         // O (1)
-        _head = new LnkListNode<T>(value, next: _head);
+        var newNode = new LnkListNode<T>(value);
+        newNode.Link(_head);
+        _head = newNode;
+        _count++;
     }
     
-    // O(n)
+    // O(1)
     public void Add(T value)
     {
         // O(1)
-        if (_head == null)
+        if (_last == null)
         {
-            _head = new LnkListNode<T>(value);
+            _head = _last = new LnkListNode<T>(value);
+            _count++;
             return;
         }
-        
-        // O(n)
-        var current = _head;
-        while (current.Next != null) 
-            current = current.Next;
 
-        current.Next = new LnkListNode<T>(value);
+        var newNode = new LnkListNode<T>(value);
+        _last.Link(newNode);
+        _last = newNode;
+        _count++;
     }
     
     // O(n)
     public void Insert(int index, T value)
     {
+        if (index < 0 || index > Count())
+            throw new ArgumentOutOfRangeException(nameof(index));
+        
         if (_head == null)
         {
-            _head = new LnkListNode<T>(value);
+            _head = _last = new LnkListNode<T>(value);
+            _count++;
             return;
         }
 
@@ -57,11 +68,14 @@ public class LnkList<T>
         var i = 0;
         var current = _head;
 
-        while (current.Next != null)
+        while (current != null)
         {
-            if (i == index - 1)
+            if (i == index)
             {
-                current.Next = new LnkListNode<T>(value, current.Next);
+                var newNode = new LnkListNode<T>(value);
+                current.Previous!.Link(newNode);
+                newNode.Link(current);
+                _count++;
                 return;
             }
 
@@ -88,21 +102,8 @@ public class LnkList<T>
         return result;
     }
     
-    // O(n)
-    public int Count()
-    {
-        if (_head == null)
-            return 0;
-
-        var current = _head;
-        var count = 0;
-        while (current != null)
-        {
-            count++;
-            current = current.Next;
-        }
-        return count;
-    }
+    // O(1)
+    public int Count() => _count;
 
     public bool Remove(T value)
     {
@@ -111,16 +112,18 @@ public class LnkList<T>
 
         if (_head.Value.Equals(value))
         {
-            _head = null;
+            _head = _last= null;
+            _count = 0;
             return true;
         }
 
         var current = _head;
-        while (current.Next != null)
+        while (current != null)
         {
-            if (current.Next.Value.Equals(value))
+            if (current.Value.Equals(value))
             {
-                current.Next = current.Next.Next;
+                current.Previous.Link(current.Next);
+                _count--;
                 return true;
             }
             current = current.Next;
@@ -131,6 +134,38 @@ public class LnkList<T>
 
     public IEnumerable<T> ToReversedEnumerable()
     {
-        throw new NotImplementedException();
+        if (_last == null)
+            return Array.Empty<T>();
+        
+        var result = new List<T>();
+        var current = _last;
+        while (current != null)
+        {
+            result.Add(current.Value);
+            current = current.Previous;
+        }
+
+        return result;
+    }
+
+    public IEnumerator<T> GetEnumerator() => ToEnumerable().GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => 
+        GetEnumerator();
+
+    public int IndexOf(T value)
+    {
+        if (_head == null)
+            return -1;
+
+        var index = 0;
+        var current = _head;
+        while (current != null)
+        {
+            index++;
+            current = current.Next;
+        }
+
+        return index;
     }
 }
