@@ -4,17 +4,18 @@ public class TreeNode<T>
 {
     public T Value { get; set; }
     public List<TreeNode<T>> Children { get; set; }
-    public int Level => throw new NotImplementedException();
+    public int Level { get; private set; }
 
-    public TreeNode(T value)
+    public TreeNode(T value, int level = 0)
     {
         Value = value;
         Children = new List<TreeNode<T>>();
+        Level = level;
     }
 
     public TreeNode<T> Add(T childValue)
     {
-        var child = new TreeNode<T>(childValue);
+        var child = new TreeNode<T>(childValue, Level + 1);
         Children.Add(child);
         return child;
     }
@@ -51,14 +52,26 @@ public class TreeNode<T>
         action(this);
     }
     
-    public int Height()
-    {
-        throw new NotImplementedException();
-    }
-
+    public int Height() => 
+        Children.Any() 
+            ? 1 + Children.Max(node => node.Height()) 
+            : 0;
+    
+    // O(n)
     public void LevelTraverse(Action<TreeNode<T>> action)
     {
-        // Hint: Use Level
-        throw new NotImplementedException();
+        var queue = new Queue<TreeNode<T>>();
+        // O(1)
+        queue.Enqueue(this);
+
+        while (queue.Count > 0)
+        {
+            // O(1)
+            var current = queue.Dequeue();
+            action(current);
+
+            foreach (var child in current.Children) 
+                queue.Enqueue(child);
+        }
     }
 }

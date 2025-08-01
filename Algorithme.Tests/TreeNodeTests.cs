@@ -172,7 +172,7 @@ public class TreeNodeTests
     }
 
     [Fact]
-    public void Height()
+    public void Height_Many()
     {
         var goku = new TreeNode<string>("Goku");
         goku
